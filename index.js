@@ -283,7 +283,9 @@ const run = function () {
     // const toCreate = filesToCreate.map((e) => titleFromFilePath(e))
 
     notion.blocks.children.list({ block_id: getNotionRootPageId() }).then((blocksResponse) => {
-      const current = blocksResponse.results.map((e) => titleToFilePath(e.child_page.title))
+      const current = blocksResponse.results
+        .filter((e) => e.type === 'child_page' && e.child_page?.title)
+        .map((e) => titleToFilePath(e.child_page.title))
       // console.log('created titles ->', current)
 
       const toCreate = getFilesToProcess()
